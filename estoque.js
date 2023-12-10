@@ -1,11 +1,9 @@
 let estoque = {
-    'joao': [
-        {'tipo': 'maca', 'qtd': 1},
-        {'tipo': 'pera', 'qtd': 2}
-    ],
     'maria': [
-        {'tipo': 'maca', 'qtd': 2},
-        {'tipo': 'banana', 'qtd': 4}
+        {'tipo': 'maca', 'quantidade': 2}
+    ],
+    'joao': [
+        {'tipo': 'maca', 'quantidade': 1}
     ]
 };
 
@@ -49,13 +47,13 @@ function transacaoNoEstoque(origem, destino, tipo, quantidade) {
     }
 
     if(!monteDestino) {
-        monteDestino = {'tipo': tipo, 'qtd':0};
+        monteDestino = {'tipo': tipo, 'quantidade':0};
         pessoaDestino.push(monteDestino);
     }
 
-    const qtdReal = Math.min(quantidade, monteOrigem.qtd);
-    monteDestino.qtd += qtdReal;
-    monteOrigem.qtd -= qtdReal;
+    const qtdReal = Math.min(quantidade, monteOrigem.quantidade);
+    monteDestino.quantidade += qtdReal;
+    monteOrigem.quantidade -= qtdReal;
 }
 
 function dePomarParaPessoa(destino, quantidade, tipo){
@@ -63,11 +61,11 @@ function dePomarParaPessoa(destino, quantidade, tipo){
         for(let i = 0; i < pessoa.length; i++){
             const monte = pessoa[i];
             if (monte.tipo === tipo) {
-                monte.qtd += Math.max(quantidade, 0);
+                monte.quantidade += Math.max(quantidade, 0);
                 return;
             }
         }
-        const novoMonte = {'tipo': tipo, 'qtd': Math.max(quantidade, 0)};
+        const novoMonte = {'tipo': tipo, 'quantidade': Math.max(quantidade, 0)};
         pessoa.push(novoMonte);
 }
 
@@ -77,8 +75,12 @@ function dePessoaParaPomar(origem, quantidade, tipo){
         for(let i = 0; i < pessoa.length; i++){
             const monte = pessoa[i];
             if (monte.tipo === tipo) {
-                monte.qtd -= Math.min(quantidade, monte.qtd);
+                monte.quantidade -= Math.min(quantidade, monte.quantidade);
             }
         }
 }
-export { getEstoque, transacaoNoEstoque };
+
+function limpaEstoque(){
+    estoque = {};
+}
+export { getEstoque, transacaoNoEstoque, limpaEstoque };
